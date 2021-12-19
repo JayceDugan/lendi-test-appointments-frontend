@@ -24,6 +24,7 @@ type BrokerAppointments = {
 }[];
 
 const AppointmentSelect = () => {
+  const [appointmentPreview, setAppointmentPreview] = useState(null)
   const [brokerAppointments, setBrokerAppointments] = useState<BrokerAppointments>([])
   const requestBrokers = axios.get("http://localhost:8080/brokers").then(({ data }) => data);
   const requestAppointments = axios.get("http://localhost:8080/appointments").then(({ data }) => data);
@@ -50,12 +51,30 @@ const AppointmentSelect = () => {
         TODO: populate brokers
         <ul>
           { brokerAppointments.map((broker) => (
-            <Broker key={broker.id} broker={broker} />
+            <Broker key={broker.id} broker={broker} setAppointmentPreview={setAppointmentPreview} />
           ))}
         </ul>
       </SideBar>
       <div>
         <Heading>Appointment details</Heading>
+
+        {
+          appointmentPreview !== null
+          ? (
+            <table>
+              <tr>
+                <th>ID</th>
+                <th>BrokerID</th>
+                <th>Date</th>
+              </tr>
+              <tr>
+                <td>{ appointmentPreview.id }</td>
+                <td>{ appointmentPreview.brokerId }</td>
+                <td>{ appointmentPreview.date }</td>
+              </tr>
+            </table>
+          ) : null
+        }
         TODO: get appointment details when clicking on one from the left side
       </div>
     </Wrapper>

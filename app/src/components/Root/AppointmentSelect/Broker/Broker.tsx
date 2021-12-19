@@ -7,6 +7,7 @@ export interface BrokerProps {
     id: number;
     appointments: { id: number; brokerId: number; date: string }[];
   };
+  setAppointmentPreview: any,
 }
 
 const Broker = (props: BrokerProps) => {
@@ -22,11 +23,15 @@ const Broker = (props: BrokerProps) => {
       <button onClick={toggleAppointments}>
         { appointmentsVisible ? 'Hide ' : 'Show ' }
         Appointments
+
       </button>
       { appointmentsVisible ? (
         <ul>
           { props.broker.appointments.map((appointment) => (
-            <li>{ appointment.date }</li>
+            <li>
+              { appointment.date }
+              <button onClick={() => props.setAppointmentPreview(appointment)}>Preview</button>
+            </li>
           ))}
         </ul>
       ) : null }
