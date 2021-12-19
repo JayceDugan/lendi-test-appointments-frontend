@@ -1,8 +1,12 @@
+import { useEffect, useState } from 'react';
 import axios from "axios";
 import styled from "styled-components";
 
+import { AppointmentPreviewInterface, AppointmentSelectPropsInterface, BrokerInterface } from '../../../lib/interfaces';
+import { BrokerAppointmentsType } from '../../../lib/types';
+
 import Broker from "./Broker";
-import { useEffect, useState } from 'react';
+import AppointmentPreview from './AppointmentPreview/AppointmentPreview';
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,26 +21,18 @@ const Heading = styled.strong.attrs({ role: "heading", level: 2 })`
   font-size: 20px;
 `;
 
-type BrokerAppointments = {
-  id: number;
-  name: string;
-  appointments: { id: number; brokerId: number; date: string }[];
-}[];
+const AppointmentSelect = (props: AppointmentSelectPropsInterface) => {
+  const [appointmentPreview, setAppointmentPreview] = useState<AppointmentPreviewInterface | null>(null)
+  const [brokerAppointments, setBrokerAppointments] = useState<BrokerAppointmentsType>([])
 
-export interface AppointmentSelectProps {
-  setActiveAppointment: any
-}
-
-const AppointmentSelect = (props: AppointmentSelectProps) => {
-  const [appointmentPreview, setAppointmentPreview] = useState(null)
-  const [brokerAppointments, setBrokerAppointments] = useState<BrokerAppointments>([])
   const requestBrokers = axios.get("http://localhost:8080/brokers").then(({ data }) => data);
   const requestAppointments = axios.get("http://localhost:8080/appointments").then(({ data }) => data);
 
   useEffect(function() {
-    async function init() {
+    async function loadBrokersAndAppointments() {
       const [brokers, appointments] = await Promise.all([requestBrokers, requestAppointments])
-      const mappedAppointments = brokers.map((broker) => ({
+
+      const mappedAppointments = brokers.map((broker: BrokerInterface): BrokerAppointmentsType => ({
         ...broker,
         // @ts-ignore
         appointments: appointments.filter((appointment) => appointment.brokerId === broker.id)
@@ -45,7 +41,7 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
       setBrokerAppointments(mappedAppointments)
     }
 
-    init()
+    loadBrokersAndAppointments()
   }, [])
 
   return (
@@ -53,7 +49,7 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
       <SideBar>
         <Heading>Amazing site</Heading>
         <ul>
-          { brokerAppointments.map((broker) => (
+          { brokerAppointments.map((broker: BrokerInterface) => (
             <Broker key={broker.id} broker={broker} setAppointmentPreview={setAppointmentPreview} />
           ))}
         </ul>
@@ -65,23 +61,7 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
           appointmentPreview !== null
           ? (
             <>
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>BrokerID</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>{ appointmentPreview.appointment.id }</td>
-                  <td>{ appointmentPreview.appointment.brokerId }</td>
-                  <td>{ appointmentPreview.appointment.date }</td>
-                </tr>
-                </tbody>
-              </table>
-
+              <AppointmentPreview appointment={appointmentPreview.appointment} />
               <button onClick={() => props.setActiveAppointment(appointmentPreview)}>
                 Select Appointment
               </button>

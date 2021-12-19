@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from 'react'
+import { AppointmentPreviewInterface } from '../../../../lib/interfaces';
 
 export interface BrokerProps {
   broker: {
@@ -7,7 +8,7 @@ export interface BrokerProps {
     id: number;
     appointments: { id: number; brokerId: number; date: string }[];
   };
-  setAppointmentPreview: any,
+  setAppointmentPreview: (arg0: AppointmentPreviewInterface) => void,
 }
 
 const Broker = (props: BrokerProps) => {
@@ -52,9 +53,9 @@ const Broker = (props: BrokerProps) => {
                     <button
                       data-testid="broker-appointment-list-item-preview"
                       onClick={() => props.setAppointmentPreview({
-                      broker: props.broker,
-                      appointment
-                    })
+                        broker: props.broker,
+                        appointment
+                      })
                     }>Preview</button>
                   </li>
                 ))}
