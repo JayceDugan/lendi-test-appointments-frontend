@@ -30,7 +30,10 @@ const Broker = (props: BrokerProps) => {
           { props.broker.appointments.map((appointment) => (
             <li>
               { appointment.date }
-              <button onClick={() => props.setAppointmentPreview(appointment)}>Preview</button>
+              <button onClick={() => props.setAppointmentPreview({
+                broker: props.broker,
+                appointment
+              })}>Preview</button>
             </li>
           ))}
         </ul>

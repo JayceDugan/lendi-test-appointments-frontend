@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useState } from 'react'
 
 import Navigation from "./Navigation";
 import AppointmentSelect from "./AppointmentSelect";
@@ -27,12 +28,14 @@ const Heading = styled.strong.attrs({ role: "heading", level: 1 })`
 `;
 
 const Root = () => {
+  const [activeAppointment, setActiveAppointment] = useState(null);
+
   return (
     <Wrapper>
-      <Navigation />
+      <Navigation activeAppointment={activeAppointment} />
       <Content>
         <Heading>Amazing site</Heading>
-        <AppointmentSelect />
+        <AppointmentSelect setActiveAppointment={setActiveAppointment} />
       </Content>
     </Wrapper>
   );

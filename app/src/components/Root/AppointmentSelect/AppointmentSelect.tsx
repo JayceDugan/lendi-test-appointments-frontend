@@ -23,7 +23,11 @@ type BrokerAppointments = {
   appointments: { id: number; brokerId: number; date: string }[];
 }[];
 
-const AppointmentSelect = () => {
+export interface AppointmentSelectProps {
+  setActiveAppointment: any
+}
+
+const AppointmentSelect = (props: AppointmentSelectProps) => {
   const [appointmentPreview, setAppointmentPreview] = useState(null)
   const [brokerAppointments, setBrokerAppointments] = useState<BrokerAppointments>([])
   const requestBrokers = axios.get("http://localhost:8080/brokers").then(({ data }) => data);
@@ -61,18 +65,24 @@ const AppointmentSelect = () => {
         {
           appointmentPreview !== null
           ? (
-            <table>
-              <tr>
-                <th>ID</th>
-                <th>BrokerID</th>
-                <th>Date</th>
-              </tr>
-              <tr>
-                <td>{ appointmentPreview.id }</td>
-                <td>{ appointmentPreview.brokerId }</td>
-                <td>{ appointmentPreview.date }</td>
-              </tr>
-            </table>
+            <>
+              <table>
+                <tr>
+                  <th>ID</th>
+                  <th>BrokerID</th>
+                  <th>Date</th>
+                </tr>
+                <tr>
+                  <td>{ appointmentPreview.appointment.id }</td>
+                  <td>{ appointmentPreview.appointment.brokerId }</td>
+                  <td>{ appointmentPreview.appointment.date }</td>
+                </tr>
+              </table>
+
+              <button onClick={() => props.setActiveAppointment(appointmentPreview)}>
+                Select Appointment
+              </button>
+            </>
           ) : null
         }
         TODO: get appointment details when clicking on one from the left side

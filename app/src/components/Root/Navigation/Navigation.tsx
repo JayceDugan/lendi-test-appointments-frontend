@@ -11,11 +11,32 @@ const Wrapper = styled.div`
   margin-bottom: 48px;
 `;
 
-const Navigation = () => {
+export interface NavigationProps {
+  activeAppointment: {
+    broker: {
+      name: string;
+      id: number;
+      appointments: { id: number; brokerId: number; date: string }[];
+    };
+    appointment: {
+      id: number;
+      brokerId: number;
+      date: string
+    }
+  } | null
+}
+
+const Navigation = (props: NavigationProps) => {
+  const appointmentDate = props.activeAppointment !== null ? (props?.activeAppointment?.appointment?.date) : ''
+  const appointmentBroker = props.activeAppointment !== null ? props?.activeAppointment?.broker?.name : ''
+  const appointmentMessage = props.activeAppointment !== null
+      ? `Currently selected appointment: ${appointmentDate} with ${appointmentBroker}`
+      : 'Please select your next appointment with Lendi.'
+
   return (
     <Wrapper>
       <strong>
-        Currently selected appointment: [appointment date] with [broker name]
+        { appointmentMessage }
       </strong>
       <strong>Welcome to Lendi</strong>
     </Wrapper>
