@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from 'react'
 import { AppointmentPreviewInterface } from '../../../../lib/interfaces';
+import BrokerAppointmentsList from './BrokerAppointmentsList';
 
 export interface BrokerProps {
   broker: {
@@ -41,25 +42,7 @@ const Broker = (props: BrokerProps) => {
               Appointments
             </button>
             { appointmentsVisible ? (
-              <ul data-testid="broker-appointments-list">
-                { props.broker.appointments.map((appointment) => (
-                  <li
-                    key={`broker-${props.broker.id}-appointment-${appointment.id}`}
-                    data-testid={`broker-appointment-list-item-${appointment.id}`}
-                  >
-                    <p data-testid={`broker-appointment-list-item-${appointment.id}-date`}>
-                      { appointment.date }
-                    </p>
-                    <button
-                      data-testid="broker-appointment-list-item-preview"
-                      onClick={() => props.setAppointmentPreview({
-                        broker: props.broker,
-                        appointment
-                      })
-                    }>Preview</button>
-                  </li>
-                ))}
-              </ul>
+              <BrokerAppointmentsList broker={props.broker} setAppointmentPreview={props.setAppointmentPreview} />
             ) : null }
           </>
         ) : (
