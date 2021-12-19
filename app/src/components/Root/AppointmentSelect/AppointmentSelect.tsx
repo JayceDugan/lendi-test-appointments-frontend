@@ -2,6 +2,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import Broker from "./Broker";
+import { useEffect, useState } from 'react';
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,12 +24,24 @@ type BrokerAppointments = {
 }[];
 
 const AppointmentSelect = () => {
-  axios
-    .get("http://localhost:8080/brokers")
-    .then(({ data }) => console.log(data));
-  axios
-    .get("http://localhost:8080/appointments")
-    .then(({ data }) => console.log(data));
+  const [brokerAppointments, setBrokerAppointments] = useState<BrokerAppointments>([])
+  const requestBrokers = axios.get("http://localhost:8080/brokers").then(({ data }) => data);
+  const requestAppointments = axios.get("http://localhost:8080/appointments").then(({ data }) => data);
+
+  useEffect(function() {
+    async function init() {
+      const [brokers, appointments] = await Promise.all([requestBrokers, requestAppointments])
+      const mappedAppointments = brokers.map((broker) => ({
+        ...broker,
+        // @ts-ignore
+        appointments: appointments.filter((appointment) => appointment.brokerId === broker.id)
+      }));
+
+      setBrokerAppointments(mappedAppointments)
+    }
+
+    init()
+  }, [])
 
   return (
     <Wrapper>
@@ -36,9 +49,9 @@ const AppointmentSelect = () => {
         <Heading>Amazing site</Heading>
         TODO: populate brokers
         <ul>
-          {/* {brokerAppointments.map((broker) => (
+          { brokerAppointments.map((broker) => (
             <Broker key={broker.id} broker={broker} />
-          ))} */}
+          ))}
         </ul>
       </SideBar>
       <div>
