@@ -5,8 +5,11 @@ export interface AppointmentPreviewPropsInterface {
 }
 
 const AppointmentPreview = (props: AppointmentPreviewPropsInterface) => {
+  const { id, brokerId, date } = props.appointment
+  const testingIdPrefix = `appointment-preview-item-${id}`
+
   return (
-    <table>
+    <table data-testid="appointment-preview">
       <thead>
       <tr>
         <th>ID</th>
@@ -15,10 +18,10 @@ const AppointmentPreview = (props: AppointmentPreviewPropsInterface) => {
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>{ props.appointment.id }</td>
-        <td>{ props.appointment.brokerId }</td>
-        <td>{ props.appointment.date }</td>
+      <tr data-testid={ testingIdPrefix }>
+        <td data-testid={testingIdPrefix.concat('-id')}>{ id }</td>
+        <td data-testid={testingIdPrefix.concat('-brokerid')}>{ brokerId }</td>
+        <td data-testid={testingIdPrefix.concat('-date')}>{ date }</td>
       </tr>
       </tbody>
     </table>

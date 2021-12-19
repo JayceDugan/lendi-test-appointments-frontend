@@ -1,6 +1,7 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 
 import Broker from "./Broker";
+import BrokerAppointmentsList from './BrokerAppointmentsList';
 
 const testBroker = {
   name: "bob",
@@ -14,7 +15,7 @@ describe("Broker Component", () => {
 
     const showAppointmentsButton = screen.getByTestId("broker-show-appointments-button");
 
-    expect(showAppointmentsButton.textContent).toBeTruthy()
+    expect(showAppointmentsButton).toBeTruthy()
     expect(showAppointmentsButton.textContent).toBe('Show Appointments')
 
     fireEvent.click(showAppointmentsButton)
@@ -25,13 +26,25 @@ describe("Broker Component", () => {
     expect(hideAppointmentsButton.textContent).toBe('Hide Appointments')
   });
 
-  test("Broker appointments are listed when the preview button is clicked.", () => {
+  test("Broker appointments list is shown when the preview button is clicked.", () => {
     render(<Broker broker={testBroker} setAppointmentPreview={() => {}} />);
 
     // Elements
     const showAppointmentsButton = screen.getByTestId("broker-show-appointments-button");
 
     fireEvent.click(showAppointmentsButton)
+
+    const appointmentsList = screen.getByTestId('broker-appointments-list')
+    const appointmentItem = screen.getByTestId(`broker-appointment-list-item-${testBroker.appointments[0].id}`)
+    const appointmentItemDate = screen.getByTestId(`broker-appointment-list-item-${testBroker.appointments[0].id}-date`)
+
+    expect(appointmentsList).toBeTruthy()
+    expect(appointmentItem).toBeTruthy()
+    expect(appointmentItemDate.textContent).toBe(testBroker.appointments[0].date)
+  });
+
+  test("Broker appointments list shows list of appointments", () => {
+    render(<BrokerAppointmentsList broker={testBroker} setAppointmentPreview={() => {}} />);
 
     const appointmentsList = screen.getByTestId('broker-appointments-list')
     const appointmentItem = screen.getByTestId(`broker-appointment-list-item-${testBroker.appointments[0].id}`)
