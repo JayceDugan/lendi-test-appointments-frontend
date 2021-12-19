@@ -40,17 +40,17 @@ const Broker = (props: BrokerProps) => {
               Appointments
             </button>
             { appointmentsVisible ? (
-              <ul data-testingid="broker-appointments-list">
+              <ul data-testid="broker-appointments-list">
                 { props.broker.appointments.map((appointment) => (
                   <li
                     key={`broker-${props.broker.id}-appointment-${appointment.id}`}
-                    data-testingid="broker-appointment-list-item"
+                    data-testid={`broker-appointment-list-item-${appointment.id}`}
                   >
-                    <p data-testingid="broker-appointment-list-item-date">
+                    <p data-testid={`broker-appointment-list-item-${appointment.id}-date`}>
                       { appointment.date }
                     </p>
                     <button
-                      data-testingid="broker-appointment-list-item-preview"
+                      data-testid="broker-appointment-list-item-preview"
                       onClick={() => props.setAppointmentPreview({
                       broker: props.broker,
                       appointment
@@ -62,7 +62,7 @@ const Broker = (props: BrokerProps) => {
             ) : null }
           </>
         ) : (
-          <p data-testingid="broker-no-appointments-message">
+          <p data-testid="broker-no-appointments-message">
             { props.broker.name } currently has no appointments available.
           </p>
         )
