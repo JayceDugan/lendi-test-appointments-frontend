@@ -52,7 +52,6 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
     <Wrapper>
       <SideBar>
         <Heading>Amazing site</Heading>
-        TODO: populate brokers
         <ul>
           { brokerAppointments.map((broker) => (
             <Broker key={broker.id} broker={broker} setAppointmentPreview={setAppointmentPreview} />
@@ -67,16 +66,20 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
           ? (
             <>
               <table>
-                <tr>
-                  <th>ID</th>
-                  <th>BrokerID</th>
-                  <th>Date</th>
-                </tr>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>BrokerID</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
                 <tr>
                   <td>{ appointmentPreview.appointment.id }</td>
                   <td>{ appointmentPreview.appointment.brokerId }</td>
                   <td>{ appointmentPreview.appointment.date }</td>
                 </tr>
+                </tbody>
               </table>
 
               <button onClick={() => props.setActiveAppointment(appointmentPreview)}>
@@ -85,7 +88,6 @@ const AppointmentSelect = (props: AppointmentSelectProps) => {
             </>
           ) : null
         }
-        TODO: get appointment details when clicking on one from the left side
       </div>
     </Wrapper>
   );
