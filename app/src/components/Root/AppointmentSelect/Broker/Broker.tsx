@@ -8,15 +8,17 @@ export interface BrokerProps {
   };
 }
 
-const Broker = (broker: BrokerProps) => {
+const Broker = (props: BrokerProps) => {
   return (
     <li>
-      [broker name]
+      { props.broker.name }
       <br />
       appointments:
       <button>Hide appointments</button>
       <ul>
-        <li>[appointment date]</li>
+        { props.broker.appointments.map((appointment) => (
+          <li>{ appointment.date }</li>
+        ))}
       </ul>
     </li>
   );
