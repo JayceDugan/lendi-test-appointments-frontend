@@ -10,7 +10,7 @@ const testBroker = {
 
 describe("Broker Component", () => {
   test("should hide and show appointments on button click", () => {
-    render(<Broker broker={testBroker} setAppointmentPreview={null}/>);
+    render(<Broker broker={testBroker} setAppointmentPreview={() => {}} />);
 
     const showAppointmentsButton = screen.getByTestId("broker-show-appointments-button");
 
@@ -26,7 +26,7 @@ describe("Broker Component", () => {
   });
 
   test("Broker appointments are listed when the preview button is clicked.", () => {
-    render(<Broker broker={testBroker} setAppointmentPreview={null}/>);
+    render(<Broker broker={testBroker} setAppointmentPreview={() => {}} />);
 
     // Elements
     const showAppointmentsButton = screen.getByTestId("broker-show-appointments-button");
