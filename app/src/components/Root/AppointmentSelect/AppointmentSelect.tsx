@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import styled from "styled-components";
 
-import { AppointmentPreviewInterface, AppointmentSelectPropsInterface, BrokerInterface } from '../../../lib/interfaces';
+import {
+  AppointmentInterface,
+  AppointmentPreviewInterface,
+  AppointmentSelectPropsInterface,
+  BrokerInterface,
+} from '../../../lib/interfaces';
 import { BrokerAppointmentsType } from '../../../lib/types';
 
 import Broker from "./Broker";
@@ -34,8 +39,12 @@ const AppointmentSelect = (props: AppointmentSelectPropsInterface) => {
 
       const mappedAppointments = brokers.map((broker: BrokerInterface): BrokerAppointmentsType => ({
         ...broker,
+        // Disabled TS as recommendations suggest user defined type guards,
+        // but while playing with solutions I didn't resolve the issue &
+        // given my understanding of type guards is limited I couldn't be sure
+        // that the final solution would even be reasonable in fixing the issue.
         // @ts-ignore
-        appointments: appointments.filter((appointment) => appointment.brokerId === broker.id)
+        appointments: appointments.filter((appointment: AppointmentInterface): Array<AppointmentInterface> => appointment.brokerId === broker.id)
       }));
 
       setBrokerAppointments(mappedAppointments)
